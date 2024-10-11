@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+option go_package = "./protos/product_proto";
+
+service ProductService{
+    rpc CreateProduct(CreateProductReq) returns(CreateProductRes);
+    rpc GetProductbyId(GetProductReq) returns(Product);
+    rpc GetProductOrder(GetProductOrderReq) returns(Product);
+    rpc ListProducts(ListProductsReq) returns(ListProductsRes);
+    rpc UpdateProducts(Product) returns(UpdateProductRes);
+    rpc DeleteProducts(GetProductReq) returns(UpdateProductRes);
+    
+}
+
+message CreateProductReq{
+    string      name            = 1;
+    string      description     = 2;
+    float       price           = 3;
+    float       discount_price  = 4;
+    int32       stock_quantity  = 5;
+};
+
+message CreateProductRes{
+    string      product_id      = 1;
+    string      message         = 2;
+};
+
+message Product{
+    string      product_id      = 1;
+    string      name            = 2;
+    string      description     = 3;
+    float       price           = 4;
+    float       discount_price  = 5;
+    int32       stock_quantity  = 6;
+}
+
+message ListProductsRes{
+    repeated    Product product = 1;
+}
+
+message ListProductsReq{}
+
+message GetProductReq{
+    string      product_id      = 1;
+}
+
+message UpdateProductRes{
+    string      message         = 1;
+}
+
+message GetProductOrderReq{
+    string      product_id      = 1;
+    int32       quantity        = 2;
+}

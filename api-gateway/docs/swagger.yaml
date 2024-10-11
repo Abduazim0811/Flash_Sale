@@ -1,0 +1,1347 @@
+definitions:
+  flashSale_proto.CreateFlashSaleRequest:
+    properties:
+      description:
+        type: string
+      end_time:
+        type: string
+      name:
+        type: string
+      products:
+        items:
+          $ref: '#/definitions/flashSale_proto.ProductId'
+        type: array
+      start_time:
+        type: string
+    type: object
+  flashSale_proto.CreateFlashSaleResponse:
+    properties:
+      event:
+        $ref: '#/definitions/flashSale_proto.FlashSaleEvent'
+    type: object
+  flashSale_proto.DeleteFlashSaleRequest:
+    properties:
+      id:
+        type: string
+    type: object
+  flashSale_proto.DeleteFlashSaleResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  flashSale_proto.FlashSaleEvent:
+    properties:
+      description:
+        type: string
+      end_time:
+        type: string
+      id:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        type: string
+      products:
+        items:
+          $ref: '#/definitions/flashSale_proto.FlashSaleProduct'
+        type: array
+      start_time:
+        type: string
+    type: object
+  flashSale_proto.FlashSaleProduct:
+    properties:
+      description:
+        type: string
+      discount_price:
+        type: number
+      is_active:
+        type: boolean
+      name:
+        type: string
+      original_price:
+        type: number
+      product_id:
+        type: string
+      stock:
+        type: integer
+    type: object
+  flashSale_proto.GetActiveFlashSalesResponse:
+    properties:
+      active_events:
+        items:
+          $ref: '#/definitions/flashSale_proto.FlashSaleEvent'
+        type: array
+    type: object
+  flashSale_proto.ListFlashSalesResponse:
+    properties:
+      events:
+        items:
+          $ref: '#/definitions/flashSale_proto.FlashSaleEvent'
+        type: array
+    type: object
+  flashSale_proto.ProductId:
+    properties:
+      descount_price:
+        type: number
+      product_id:
+        type: string
+    type: object
+  flashSale_proto.PurchaseProductRequest:
+    properties:
+      product_id:
+        type: string
+      quantity:
+        type: integer
+      user_id:
+        type: string
+    type: object
+  flashSale_proto.PurchaseProductResponse:
+    properties:
+      message:
+        type: string
+      product:
+        $ref: '#/definitions/flashSale_proto.FlashSaleProduct'
+    type: object
+  flashSale_proto.UpdateFlashSaleRequest:
+    properties:
+      description:
+        type: string
+      end_time:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      products:
+        items:
+          $ref: '#/definitions/flashSale_proto.FlashSaleProduct'
+        type: array
+      start_time:
+        type: string
+    type: object
+  flashSale_proto.UpdateFlashSaleResponse:
+    properties:
+      event:
+        $ref: '#/definitions/flashSale_proto.FlashSaleEvent'
+    type: object
+  inventory_proto.CreateInventoryReq:
+    properties:
+      product_id:
+        type: string
+      quantity:
+        type: integer
+    type: object
+  inventory_proto.CreateInventoryRes:
+    properties:
+      message:
+        type: string
+    type: object
+  inventory_proto.GetAllInventoriesRes:
+    properties:
+      inventories:
+        items:
+          $ref: '#/definitions/inventory_proto.Inventory'
+        type: array
+    type: object
+  inventory_proto.Inventory:
+    properties:
+      created_at:
+        type: string
+      inventoryId:
+        type: string
+      is_active:
+        type: boolean
+      product_id:
+        type: string
+      quantity:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  inventory_proto.UpdateInventoryRequest:
+    properties:
+      product_id:
+        type: string
+      quantity:
+        type: integer
+    type: object
+  inventory_proto.UpdateInventoryResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  order_proto.CreateOrderRequest:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/order_proto.OrderItem'
+        type: array
+      user_id:
+        type: string
+    type: object
+  order_proto.CreateOrderResponse:
+    properties:
+      message:
+        type: string
+      order_id:
+        type: string
+      status:
+        type: string
+      total_amount:
+        type: number
+      unavailable_products:
+        items:
+          $ref: '#/definitions/order_proto.UnavailableProduct'
+        type: array
+    type: object
+  order_proto.GetAllOrdersResponse:
+    properties:
+      orders:
+        items:
+          $ref: '#/definitions/order_proto.Order'
+        type: array
+    type: object
+  order_proto.GetOrderResponse:
+    properties:
+      order:
+        $ref: '#/definitions/order_proto.Order'
+    type: object
+  order_proto.GetOrdersResponse:
+    properties:
+      orders:
+        items:
+          $ref: '#/definitions/order_proto.Order'
+        type: array
+    type: object
+  order_proto.Order:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/order_proto.OrderItem'
+        type: array
+      status:
+        type: string
+      total_price:
+        type: number
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  order_proto.OrderItem:
+    properties:
+      product_id:
+        type: string
+      quantity:
+        type: integer
+    type: object
+  order_proto.UnavailableProduct:
+    properties:
+      available_quantity:
+        type: integer
+      product_id:
+        type: string
+      requested_quantity:
+        type: integer
+    type: object
+  order_proto.UpdateOrderStatusRequest:
+    properties:
+      order_id:
+        type: string
+      status:
+        type: string
+    type: object
+  order_proto.UpdateOrderStatusResponse:
+    properties:
+      order:
+        $ref: '#/definitions/order_proto.Order'
+    type: object
+  payment_proto.Payment:
+    properties:
+      amount:
+        type: number
+      created_at:
+        type: string
+      id:
+        type: string
+      order_id:
+        type: string
+      status:
+        type: string
+      user_id:
+        type: string
+    type: object
+  payment_proto.PaymentRequest:
+    properties:
+      amount:
+        type: number
+      order_id:
+        type: string
+      user_id:
+        type: string
+    type: object
+  payment_proto.PaymentResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  product_proto.CreateProductReq:
+    properties:
+      description:
+        type: string
+      discount_price:
+        type: number
+      name:
+        type: string
+      price:
+        type: number
+      stock_quantity:
+        type: integer
+    type: object
+  product_proto.CreateProductRes:
+    properties:
+      message:
+        type: string
+      product_id:
+        type: string
+    type: object
+  product_proto.ListProductsRes:
+    properties:
+      product:
+        items:
+          $ref: '#/definitions/product_proto.Product'
+        type: array
+    type: object
+  product_proto.Product:
+    properties:
+      description:
+        type: string
+      discount_price:
+        type: number
+      name:
+        type: string
+      price:
+        type: number
+      product_id:
+        type: string
+      stock_quantity:
+        type: integer
+    type: object
+  product_proto.UpdateProductRes:
+    properties:
+      message:
+        type: string
+    type: object
+  user_proto.ListUser:
+    properties:
+      user:
+        items:
+          $ref: '#/definitions/user_proto.User'
+        type: array
+    type: object
+  user_proto.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  user_proto.LoginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  user_proto.UpdatePasswordReq:
+    properties:
+      id:
+        type: string
+      new_password:
+        type: string
+      old_password:
+        type: string
+    type: object
+  user_proto.UpdateUserReq:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      price:
+        type: number
+      username:
+        type: string
+    type: object
+  user_proto.UpdateUserRes:
+    properties:
+      message:
+        type: string
+    type: object
+  user_proto.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      password:
+        type: string
+      price:
+        type: number
+      username:
+        type: string
+    type: object
+  user_proto.UserRequest:
+    properties:
+      confirm_password:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  user_proto.UserResponse:
+    properties:
+      id:
+        type: string
+      message:
+        type: string
+    type: object
+  user_proto.VerifyReq:
+    properties:
+      code:
+        type: string
+      email:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a sample server for a restaurant reservation system.
+  title: Flash-Sale
+  version: "1.0"
+paths:
+  /flashsale:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing flash sale
+      parameters:
+      - description: Delete flash sale request body
+        in: body
+        name: flashsale
+        required: true
+        schema:
+          $ref: '#/definitions/flashSale_proto.DeleteFlashSaleRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/flashSale_proto.DeleteFlashSaleResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Delete a flash sale
+      tags:
+      - flashsale
+    get:
+      description: Get a list of all flash sales
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/flashSale_proto.ListFlashSalesResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get all flash sales
+      tags:
+      - flashsale
+    post:
+      consumes:
+      - application/json
+      description: Create a new flash sale
+      parameters:
+      - description: Create flash sale request body
+        in: body
+        name: flashsale
+        required: true
+        schema:
+          $ref: '#/definitions/flashSale_proto.CreateFlashSaleRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/flashSale_proto.CreateFlashSaleResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Create a new flash sale
+      tags:
+      - flashsale
+    put:
+      consumes:
+      - application/json
+      description: Update an existing flash sale
+      parameters:
+      - description: Update flash sale request body
+        in: body
+        name: flashsale
+        required: true
+        schema:
+          $ref: '#/definitions/flashSale_proto.UpdateFlashSaleRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/flashSale_proto.UpdateFlashSaleResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Update a flash sale
+      tags:
+      - flashsale
+  /flashsale/active:
+    get:
+      description: Get a list of active flash sales
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/flashSale_proto.GetActiveFlashSalesResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get active flash sales
+      tags:
+      - flashsale
+  /flashsale/purchase:
+    post:
+      consumes:
+      - application/json
+      description: Purchase a product that is part of a flash sale
+      parameters:
+      - description: Purchase product request body
+        in: body
+        name: purchase
+        required: true
+        schema:
+          $ref: '#/definitions/flashSale_proto.PurchaseProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/flashSale_proto.PurchaseProductResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Purchase a product during a flash sale
+      tags:
+      - flashsale
+  /inventory:
+    get:
+      description: Get all inventories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/inventory_proto.GetAllInventoriesRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get all inventories
+      tags:
+      - inventory
+    post:
+      consumes:
+      - application/json
+      description: Create a new inventory
+      parameters:
+      - description: inventory request body
+        in: body
+        name: inventory
+        required: true
+        schema:
+          $ref: '#/definitions/inventory_proto.CreateInventoryReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/inventory_proto.CreateInventoryRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Create a new inventory
+      tags:
+      - inventory
+    put:
+      consumes:
+      - application/json
+      description: Update an existing inventory
+      parameters:
+      - description: Update inventory request body
+        in: body
+        name: inventory
+        required: true
+        schema:
+          $ref: '#/definitions/inventory_proto.UpdateInventoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/inventory_proto.UpdateInventoryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Update an inventory
+      tags:
+      - inventory
+  /inventory/{id}:
+    get:
+      description: Get an inventory by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/inventory_proto.Inventory'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get inventory by ID
+      tags:
+      - inventory
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Log in a user with email and password
+      parameters:
+      - description: Login request body
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/user_proto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_proto.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: User login
+      tags:
+      - user
+  /order/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an order by ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/order_proto.CreateOrderResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Delete an order
+      tags:
+      - order
+    get:
+      consumes:
+      - application/json
+      description: Get details of a specific order by its ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/order_proto.GetOrderResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get order by ID
+      tags:
+      - order
+  /order/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new order
+      parameters:
+      - description: Order request body
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/order_proto.CreateOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/order_proto.CreateOrderResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Create a new order
+      tags:
+      - order
+  /order/status:
+    put:
+      consumes:
+      - application/json
+      description: Update the status of an order
+      parameters:
+      - description: Update order status request
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/order_proto.UpdateOrderStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/order_proto.UpdateOrderStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Update order status
+      tags:
+      - order
+  /order/user/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get all orders made by a specific user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/order_proto.GetOrdersResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get all orders of a user
+      tags:
+      - order
+  /orders:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all orders
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/order_proto.GetAllOrdersResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get all orders
+      tags:
+      - order
+  /payment/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get details of a specific payment by its ID
+      parameters:
+      - description: Payment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payment_proto.Payment'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get payment by ID
+      tags:
+      - payment
+  /payment/process:
+    post:
+      consumes:
+      - application/json
+      description: Process a new payment
+      parameters:
+      - description: Payment request body
+        in: body
+        name: payment
+        required: true
+        schema:
+          $ref: '#/definitions/payment_proto.PaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payment_proto.PaymentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Process a payment
+      tags:
+      - payment
+  /product:
+    post:
+      consumes:
+      - application/json
+      description: Create a new product
+      parameters:
+      - description: Product request body
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/product_proto.CreateProductReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product_proto.CreateProductRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Create a new product
+      tags:
+      - product
+  /product/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a specific product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product_proto.UpdateProductRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Delete a product by ID
+      tags:
+      - product
+    get:
+      consumes:
+      - application/json
+      description: Get details of a specific product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product_proto.Product'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get product by ID
+      tags:
+      - product
+    put:
+      consumes:
+      - application/json
+      description: Update information of a specific product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Product update request body
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/product_proto.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product_proto.UpdateProductRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Update product details
+      tags:
+      - product
+  /products:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all available products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product_proto.ListProductsRes'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get all products
+      tags:
+      - product
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      parameters:
+      - description: User request body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user_proto.UserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_proto.UpdateUserRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create a new user
+      tags:
+      - user
+  /users:
+    get:
+      description: Retrieve all registered users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_proto.ListUser'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get all users
+      tags:
+      - user
+  /users/{id}:
+    delete:
+      description: Delete a user by their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_proto.UpdateUserRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Delete a user
+      tags:
+      - user
+    get:
+      description: Get a user by their unique ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_proto.User'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get user by ID
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      description: Update a user's details by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update request body
+        in: body
+        name: update
+        required: true
+        schema:
+          $ref: '#/definitions/user_proto.UpdateUserReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_proto.UpdateUserRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Update a user
+      tags:
+      - user
+  /users/{id}/password:
+    put:
+      consumes:
+      - application/json
+      description: Update a user's password by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Password update request body
+        in: body
+        name: update
+        required: true
+        schema:
+          $ref: '#/definitions/user_proto.UpdatePasswordReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_proto.UpdateUserRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Update user password
+      tags:
+      - user
+  /verify-code:
+    post:
+      consumes:
+      - application/json
+      description: Verify the user code sent to the user's email
+      parameters:
+      - description: Verification request body
+        in: body
+        name: verify
+        required: true
+        schema:
+          $ref: '#/definitions/user_proto.VerifyReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_proto.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Verify a user code
+      tags:
+      - user
+securityDefinitions:
+  Bearer:
+    description: Enter the token in the format `Bearer {token}`
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

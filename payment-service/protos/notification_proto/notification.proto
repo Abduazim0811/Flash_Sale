@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option go_package = "./protos/notification_proto";
+
+service NotificationService {
+    rpc SendNotification (SendNotificationRequest) returns (SendNotificationResponse);
+    rpc SubscribeToNotifications (SubscribeRequest) returns (stream NotificationMessage);
+}
+
+message SendNotificationRequest {
+    string user_id = 1;
+    string message = 2;
+}
+
+message SendNotificationResponse {
+    bool success = 1;
+}
+
+message SubscribeRequest {
+    string user_id = 1;
+}
+
+message NotificationMessage {
+    string message = 1;
+}

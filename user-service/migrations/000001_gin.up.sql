@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS users (
+    id TEXT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    password VARCHAR(200) NOT NULL,
+    price NUMERIC(10, 2) DEFAULT 0 
+);

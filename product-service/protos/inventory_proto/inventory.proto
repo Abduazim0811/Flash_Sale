@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+option go_package = "./protos/inventory_proto";
+
+service InventoryService{
+    rpc CreateInvetory(CreateInventoryReq) returns(CreateInventoryRes);
+    rpc GetAllInventories(GetAllInventoriesReq) returns (GetAllInventoriesRes);
+    rpc GetbyIdInventory(GetbyIdInventoryReq) returns (Inventory);
+    rpc UpdateInventory(UpdateInventoryRequest) returns (UpdateInventoryResponse);
+}
+
+message CreateInventoryReq{
+    string          product_id = 1;
+    int32           quantity = 2;
+}
+
+message CreateInventoryRes{
+    string          message = 1;
+}
+
+message GetbyIdInventoryReq{
+    string          inventory = 1;
+}
+
+message GetAllInventoriesReq{}
+
+message GetAllInventoriesRes{
+    repeated Inventory inventories = 1;
+}
+
+message UpdateInventoryRequest {
+    string product_id = 1;
+    int32 quantity = 2;
+}
+
+message UpdateInventoryResponse {
+    string message = 1;
+}
+
+message Inventory {
+    string inventoryId = 1;
+    string product_id = 2;
+    int32 quantity = 3;
+    bool is_active = 4;
+    string created_at = 5;
+    string updated_at = 6;
+}

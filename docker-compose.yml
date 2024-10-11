@@ -1,0 +1,281 @@
+version: '3.8'
+services:
+  api_gateway:
+    build: ./api-gateway
+    container_name: api_gateway
+    ports:
+      - "9876:9876"
+    depends_on:
+      - user_service
+      - product_service
+      - payment_service
+      - order_service
+      - notification_service
+      - inventory_service
+      - flashsale_service
+    networks:
+      - finance
+  
+
+  user_service:
+    build: ./user-service
+    container_name: user_service
+    environment:
+      - PG_HOST=user_postgres
+      - PG_PORT=5432
+      - PG_USER=postgres
+      - PG_PASSWORD=Abdu0811
+      - PG_DBNAME=user_service
+      - REDIS_HOST=redis
+    ports:
+      - "7878:7878"
+    depends_on:
+      - user_postgres
+      - redis
+      - notification_service
+      - broker
+    networks:
+      - finance
+  
+  product_service:
+    build: ./product-service
+    container_name: product_service
+    environment:
+      - PG_HOST=product_postgres
+      - PG_PORT=5432
+      - PG_USER=postgres
+      - PG_PASSWORD=Abdu0811
+      - PG_DBNAME=product_service
+    ports:
+      - "7777:7777"
+    depends_on:
+      - product_postgres
+      - inventory_service
+      - redis
+      - broker
+    networks:
+      - finance
+  
+  payment_service:
+    build: ./payment-service
+    container_name: payment_service
+    environment:
+      - PG_HOST=payment_postgres
+      - PG_PORT=5432
+      - PG_USER=postgres
+      - PG_PASSWORD=Abdu0811
+      - PG_DBNAME=payment_service
+    ports:
+      - "7778-7778"
+    depends_on:
+      - user_service
+      - order_service
+      - notification_service
+      - inventory_service
+      - payment_postgres
+    networks:
+      - finance
+  
+  order_service:
+    build: ./order-service
+    container_name: order_service
+    environment:
+      - MONGO_URL=mongodb://order_mongo:27017/Orders
+    ports:
+      - "8888:8888"
+    depends_on:
+      - inventory_service
+      - product_service
+      - user_service
+      - notification_service
+      - order_mongo
+    networks:
+      - finance
+  
+  notification_service:
+    build: ./notification-service
+    container_name: notification_service
+    environment:
+      - broker
+    ports:
+      - "8787:8787"
+    networks:
+      - finance
+  
+  inventory_service:
+    build: ./inventory-service
+    container_name: inventory_service
+    environment:
+      - PG_HOST=product_postgres
+      - PG_PORT=5432
+      - PG_USER=postgres
+      - PG_PASSWORD=Abdu0811
+      - PG_DBNAME=product_service
+    ports:
+      - "9999:9999"
+    depends_on:
+      - product_postgres
+    networks:
+      - finance
+  
+  flashsale_service:
+    build: ./flashSale-service
+    container_name: flashsale_service
+    environment:
+      - MONGO_URL=mongodb://order_mongo:27017/FlashSale
+    ports:
+      - "9998:9998"
+    depends_on:
+      - product_service
+      - flashsale_mongo
+    networks:
+      - finance
+  
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6380:6379"
+    networks:
+      - finance
+
+  broker:
+    image: apache/kafka:latest
+    container_name: kafka_broker
+    ports:
+      - "9092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_NODE_ID: 1
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@broker:29093
+      KAFKA_LISTENERS: PLAINTEXT://broker:29092,CONTROLLER://broker:29093,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+    networks:
+      - finance
+
+  user_postgres:
+    image: postgres:14-alpine
+    container_name: user_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Abdu0811
+      POSTGRES_DB: user_service
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+      - ./user-service/migrations:/docker-entrypoint-initdb.d
+    ports:
+      - "5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d user_service || exit 1"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 10s
+    networks:
+      - finance
+  
+  product_postgres:
+    image: postgres:14-alpine
+    container_name: product_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Abdu0811
+      POSTGRES_DB: product_service
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - product-db-data:/var/lib/postgresql/data
+      - ./product-service/migrations:/docker-entrypoint-initdb.d/product_migrations
+      - ./inventory-service/migrations:/docker-entrypoint-initdb.d/inventory_migrations
+    ports:
+      - "5436:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d product_service || exit 1"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 10s
+    networks:
+      - finance
+
+
+  payment_postgres:
+    image: postgres:14-alpine
+    container_name: payment_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Abdu0811
+      POSTGRES_DB: payment_service
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - payment-db-data:/var/lib/postgresql/data
+      - ./payment-service/migrations:/docker-entrypoint-initdb.d
+    ports:
+      - "5438:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d payment_service || exit 1"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 10s
+    networks:
+      - finance
+
+  order_mongo:
+    image: mongo:latest
+    container_name: order_mongo
+    environment:
+      MONGO_INITDB_DATABASE: Orders
+    ports:
+      - "27018:27017"
+    volumes:
+      - order-db-data:/data/db
+    networks:
+      - finance
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 30s  
+      timeout: 10s  
+      retries: 5     
+      start_period: 30s  
+  
+  flashsale_mongo:
+    image: mongo:latest
+    container_name: flashsale_mongo
+    environment:
+      MONGO_INITDB_DATABASE: FlashSale
+    ports:
+      - "27019:27017"
+    volumes:
+      - flashsale-db-data:/data/db
+    networks:
+      - finance
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+
+networks:
+  finance:
+    driver: bridge
+  
+volumes:
+  flashsale-db-data:
+  order-db-data:
+  payment-db-data:
+  invnetory-db-data:
+  product-db-data:
+  user-db-data:

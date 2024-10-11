@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+option go_package = "./protos/user_proto";
+
+message User{
+    string id = 1;
+    string username = 2;
+    string email = 3;
+    string password = 4;
+    float  price = 5;
+}
+
+message UserRequest{
+    string username = 1;
+    string password = 2;
+    string confirm_password = 3;
+    string email = 4;
+}
+
+message UserResponse{
+    string id = 1;
+    string message = 2;
+}
+
+message LoginRequest{
+    string email = 1;
+    string password = 2;
+}
+
+message LoginResponse{
+    string token = 1;
+}
+
+message GetUserRequest{
+    string id = 1;
+}
+
+message UserEmpty{}
+
+message ListUser{
+   repeated User user = 1;
+}
+
+message UpdateUserReq{
+    string id = 1;
+    string username = 2;
+    string email = 3;
+    float  price = 4;
+}
+
+message UpdateUserRes{
+    string message = 1;
+}
+
+message UpdatePasswordReq{
+    string id = 1;
+    string old_password = 2;
+    string new_password = 3;
+}
+
+message VerifyReq{
+    string email = 1;
+    string code = 2;
+}
+
+service UserService {
+    rpc Register(UserRequest) returns(UpdateUserRes);
+    rpc VerifyCode(VerifyReq) returns(UserResponse);
+    rpc Login(LoginRequest) returns(LoginResponse);
+    rpc GetByIdUser(GetUserRequest) returns(User);
+    rpc GetUsers(UserEmpty) returns(ListUser);
+    rpc UpdateUser(UpdateUserReq) returns (UpdateUserRes);
+    rpc UpdatePassword(UpdatePasswordReq) returns(UpdateUserRes);
+    rpc DeleteUser(GetUserRequest) returns (UpdateUserRes);
+}

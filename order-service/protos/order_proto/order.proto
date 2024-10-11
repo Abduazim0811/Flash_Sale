@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+option go_package = "./protos/order_proto";
+
+message Order {
+    string id = 1;
+    string user_id = 2;
+    repeated OrderItem items = 3;
+    double total_price = 4;
+    string status = 5;
+    string created_at = 6;
+    string updated_at = 7;
+}
+
+message CreateOrderRequest {
+    string user_id = 1;
+    repeated OrderItem items = 2;
+}
+  
+
+message OrderItem {
+    string product_id = 1; 
+    int32 quantity = 2; 
+}
+
+message CreateOrderResponse {
+    string status = 1; 
+    string order_id = 2;
+    double total_amount = 3;
+    string message = 4;
+    repeated UnavailableProduct unavailable_products = 5;
+}
+
+message UnavailableProduct {
+    string product_id = 1;
+    int32 requested_quantity = 2;
+    int32 available_quantity = 3; 
+}
+
+message GetOrdersRequest {
+    string user_id = 1;
+}
+
+message GetOrdersResponse {
+    repeated Order orders = 1;
+}
+
+message GetOrderRequest {
+    string id = 1;
+}
+
+message GetOrderResponse {
+    Order order = 1;
+}
+
+message UpdateOrderStatusRequest {
+    string order_id = 1;
+    string status = 2;
+}
+
+message UpdateOrderStatusResponse {
+    Order order = 1;
+}
+
+message GetAllOrdersRequest {}
+
+message GetAllOrdersResponse {
+    repeated Order orders = 1;
+}
+
+service OrderService {
+    rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
+    rpc GetOrders (GetOrdersRequest) returns (GetOrdersResponse);
+    rpc GetOrder (GetOrderRequest) returns (GetOrderResponse);
+    rpc DeleteOrder (GetOrderRequest) returns(CreateOrderResponse);
+// admin
+    rpc GetAllOrders (GetAllOrdersRequest) returns (GetAllOrdersResponse);
+    rpc UpdateOrderStatus (UpdateOrderStatusRequest) returns (UpdateOrderStatusResponse);
+}
